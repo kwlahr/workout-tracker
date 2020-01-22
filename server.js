@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const Workout = require("./models/workout.js");
+// const api = require("./public/api.js");
 
 const PORT = process.env.PORT || 3000;
 
@@ -31,6 +33,17 @@ app.get("/", function(req, res) {
 
 app.get("/exercise", function(req, res) {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
+});
+
+app.post("/api/workouts", ({ body }, res) => {
+  Workout.create(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+      console.log("error on workouts");
+    });
 });
 
 app.get("/stats", function(req, res) {
