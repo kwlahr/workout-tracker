@@ -36,28 +36,61 @@ app.get("/", function(req, res) {
 //route to access workouts database
 app.get("/api/workouts", function(req, res) {
   // res.sendFile(path.join(__dirname, "index.html"));
-  Workout.find({}, function(err, workouts){res.json(workouts)});
+  Workout.find({}, function(err, workouts) {
+    res.json(workouts);
+  });
 });
 
 app.get("/api/workouts/range", function(req, res) {
-  Workout.find({}, function(err, workouts){res.json(workouts)});
+  Workout.find({}, function(err, workouts) {
+    res.json(workouts);
+  });
 });
-
-//get route for individual workouts
-app.get("/api/workouts/:id", function(req, res) {
-  // Workout.find({_id: id(`${req.params.id}`)}, function(err, workouts){res.json(workouts)});
-  console.log(req.params.id);
-  Workout.find({}, function(err, workouts){res.json(workouts)});
-});
-
-//updates instances of workouts based on id
-app.put("/api/workouts/:id", function(req, res) {
-  console.log(req.params.id);
-})
 
 //route to exercise.html
 app.get("/exercise", function(req, res) {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
+});
+
+//get route for individual workouts by id
+app.get("/api/workouts/:id", function(req, res) {
+  Workout.find({ id: `${req.params.id}` }, function(err, workouts) {
+    res.json(workouts);
+    if (err) {
+      throw err;
+    } else {
+      // console.log(req.params.id);
+    }
+  });
+  // Workout.find({}, function(err, workouts){res.json(workouts)});
+});
+
+app.put("/api/workouts/:id", function(req, res) {
+  Workout.updateOne({ id: `${req.params.id}` }, function(err, workouts) {
+    res.json(workouts);
+    if (err) {
+      throw err;
+    } else {
+      console.log(req.params.id);
+    }
+  });
+  // Workout.find({}, function(err, workouts){res.json(workouts)});
+});
+
+//updates instances of workouts based on id
+// app.put("/api/workouts/:id", function(req, res) {
+//   console.log(req.params.id);
+// });
+
+app.post("/api/workouts:id", ({ body }, res) => {
+  Workout.push(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+      console.log("error on workouts");
+    });
 });
 
 //post request creates a new instance of a workout in the database
