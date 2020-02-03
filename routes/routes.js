@@ -8,7 +8,6 @@ router.get("/", function(req, res) {
 
 //route to access workouts database
 router.get("/api/workouts", function(req, res) {
-  // res.sendFile(path.join(__dirname, "index.html"));
   Workout.find({}, function(err, workouts) {
     res.json(workouts);
   });
@@ -25,17 +24,16 @@ router.get("/exercise", function(req, res) {
   res.sendFile(path.join(__dirname, "../public/exercise.html"));
 });
 
-//post request creates a new instance of a workout in the database
+//post request creates a new instance of workout in the database
 router.post("/api/workouts", (req, res) => {
   console.log('Test')
   Workout.create({})
     .then(dbWorkout => {
       res.json(dbWorkout);
-      //console.log(body);
     })
     .catch(err => {
       res.status(400).json(err);
-      console.log("error on workouts");
+      console.log("routes error 1");
     });
 });
 
@@ -46,7 +44,7 @@ router.put("/api/workouts/:id", function(req, res) {
     })
     .catch(err => {
       res.status(400).json(err);
-      console.log("error on workouts");
+      console.log("routes error 2");
     });
 });
 
